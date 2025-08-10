@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="wasm_exec.js"></script>
-    <script>
-      const go = new Go();
-      WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-          go.run(result.instance);
-      });
-    </script>
     <title>Document</title>
   </head>
   <body>
@@ -26,16 +20,21 @@
     <h3>Result</h3>
     <p class="display"></p>
   </body>
-<style>
-  textarea {
-    width: 50vw;
-    height: 50vh;
-  }
-  .code {
-    font-family: monospace;
-  }
-</style>
+  <style>
+    textarea {
+      width: 50vw;
+      height: 50vh;
+    }
+    .code {
+      font-family: monospace;
+    }
+  </style>
   <script>
+    const go = new Go();
+    WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+        go.run(result.instance);
+    });
+
     const template = document.getElementById("template");
     const data = document.getElementById("data");
 
@@ -58,7 +57,6 @@
       let pretty = JSON.stringify(JSON.parse(result), null, "\t")
       display.classList.add("code")
       display.innerHTML = `<pre>${pretty}</pre>`
-
     }
   </script>
 </html>
